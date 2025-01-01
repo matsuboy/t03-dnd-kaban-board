@@ -1,11 +1,10 @@
 import { useState } from 'react'
 import PlusIcon from '../icons/PlusIcon'
 import { Column } from '../types'
+import { ColumnContainer } from './ColumnContainer'
 
 export function KanbanBoard() {
   const [columns, setColumns] = useState<Column[]>([])
-
-  console.log(columns)
 
   return (
     <div
@@ -20,10 +19,10 @@ export function KanbanBoard() {
               px-[40px]
     "
     >
-      <div className="m-auto">
-        <div>
+      <div className="m-auto flex gap-2">
+        <div className="flex gap-4">
           {columns.map((column) => (
-            <div>{column.title}</div>
+            <ColumnContainer key={column.id} column={column} />
           ))}
         </div>
 
@@ -44,7 +43,6 @@ export function KanbanBoard() {
                 ring-rose-500
                   hover:ring-2
                   flex
-                  items-center
                   gap-2
         "
         >
