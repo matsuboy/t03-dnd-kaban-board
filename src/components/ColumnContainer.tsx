@@ -1,10 +1,15 @@
-import { Column } from '../types'
+import TrashIcon from '../icons/TrashIcon'
+import { Column, Id } from '../types'
 
 interface ColumnContainerProps {
   column: Column
+  deleteColumn: (id: Id) => void
 }
 
-export function ColumnContainer({ column }: ColumnContainerProps) {
+export function ColumnContainer({
+  column,
+  deleteColumn,
+}: ColumnContainerProps) {
   return (
     <div
       className="
@@ -54,7 +59,21 @@ export function ColumnContainer({ column }: ColumnContainerProps) {
           </div>
           {column.title}
         </div>
-        <button>Delete</button>
+        <button
+          onClick={() => {
+            deleteColumn(column.id)
+          }}
+          className="
+                      stroke-gray-500
+                      hover:stroke-white
+                      hover:bg-columnBackgroundColor
+                      rounded
+                      px-1
+                      py-2
+        "
+        >
+          <TrashIcon />
+        </button>
       </div>
       {/**Column task container */}
       <div className="flex flex-grow">Content</div>
