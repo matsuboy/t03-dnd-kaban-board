@@ -1,3 +1,5 @@
+import { useSortable } from '@dnd-kit/sortable'
+import { CSS } from '@dnd-kit/utilities'
 import TrashIcon from '../icons/TrashIcon'
 import { Column, Id } from '../types'
 
@@ -10,8 +12,51 @@ export function ColumnContainer({
   column,
   deleteColumn,
 }: ColumnContainerProps) {
+  const {
+    setNodeRef,
+    attributes,
+    listeners,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({
+    id: column.id,
+    data: {
+      type: 'Column',
+      column,
+    },
+  })
+
+  const style = {
+    transition,
+    transform: CSS.Transform.toString(transform),
+  }
+
+  if (isDragging) {
+    return (
+      <div
+        ref={setNodeRef}
+        style={style}
+        className="
+            bg-columnBackgroundColor
+            opacity-40
+            border-2
+            border-rose-500
+            w-[350px]
+            h-[500px]
+            max-h-[500px]
+            rounded-md
+            flex
+            flex-col
+    "
+      ></div>
+    )
+  }
+
   return (
     <div
+      ref={setNodeRef}
+      style={style}
       className="
             bg-columnBackgroundColor
             w-[350px]
@@ -24,6 +69,8 @@ export function ColumnContainer({
     >
       {/**Column title */}
       <div
+        {...attributes}
+        {...listeners}
         className="
                 bg-mainBackgroundColor
                 text-md
