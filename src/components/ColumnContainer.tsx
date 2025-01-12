@@ -2,16 +2,21 @@ import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 import TrashIcon from '../icons/TrashIcon'
 import { Column, Id } from '../types'
+import { useState } from 'react'
 
 interface ColumnContainerProps {
   column: Column
   deleteColumn: (id: Id) => void
+  updateColumn: (id: Id, title: string) => void
 }
 
 export function ColumnContainer({
   column,
   deleteColumn,
+  updateColumn,
 }: ColumnContainerProps) {
+  const [editMode, setEditMode] = useState(false)
+
   const {
     setNodeRef,
     attributes,
@@ -25,6 +30,7 @@ export function ColumnContainer({
       type: 'Column',
       column,
     },
+    disabled: editMode,
   })
 
   const style = {
@@ -71,6 +77,7 @@ export function ColumnContainer({
       <div
         {...attributes}
         {...listeners}
+        onClick={() => setEditMode(true)}
         className="
                 bg-mainBackgroundColor
                 text-md
@@ -104,7 +111,21 @@ export function ColumnContainer({
           >
             0
           </div>
-          {column.title}
+
+          {!editMode && column.title}
+          {editMode && (
+            <input
+              className="bg-black focus:border-rose-500 border rounded outline-none px-2"
+              value={column.title}
+              onChange={(e) => updateColumn(column.id, e.target.value)}
+              autoFocus
+              onBlur={() => setEditMode(false)}
+              onKeyDown={(e) => {
+                if (e.key !== 'Enter') return
+                setEditMode(false)
+              }}
+            />
+          )}
         </div>
         <button
           onClick={() => {

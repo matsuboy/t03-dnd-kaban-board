@@ -53,6 +53,7 @@ export function KanbanBoard() {
                   key={column.id}
                   column={column}
                   deleteColumn={deleteColumn}
+                  updateColumn={updateColumn}
                 />
               ))}
             </SortableContext>
@@ -88,6 +89,7 @@ export function KanbanBoard() {
               <ColumnContainer
                 column={activeColumn}
                 deleteColumn={deleteColumn}
+                updateColumn={updateColumn}
               />
             )}
           </DragOverlay>,
@@ -137,6 +139,15 @@ export function KanbanBoard() {
   function deleteColumn(id: Id) {
     const filteredColumn = columns.filter((col) => col.id !== id)
     setColumns(filteredColumn)
+  }
+
+  function updateColumn(id: Id, title: string) {
+    const newColumns = columns.map((col) => {
+      if (col.id !== id) return col
+      return { ...col, title }
+    })
+
+    setColumns(newColumns)
   }
 }
 
